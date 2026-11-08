@@ -1,0 +1,110 @@
+.switch-window {
+  color: #eaf0fb;
+  background-color: #111521;
+}
+
+.switch-header {
+  color: #eaf0fb;
+  background: #191d2b;
+  border-bottom: 1px solid #2c3347;
+  box-shadow: none;
+}
+
+.hero {
+  background-color: #23243d;
+  border: 1px solid #414165;
+  border-radius: 14px;
+  padding: 13px 14px 10px;
+}
+
+.eyebrow {
+  color: #b2bcd4;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+}
+
+.active-title { font-size: 23px; font-weight: bold; }
+.active-icon { color: #c6b7ff; margin: 0 3px; }
+.muted-label { color: #b2bcd4; font-size: 12px; }
+.percent { color: #e3dcff; font-size: 13px; font-weight: bold; }
+.section-title { font-size: 15px; font-weight: bold; }
+
+.hero button, .switch-header button {
+  color: #e6defd;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.hero button:hover, .switch-header button:hover { background: #383951; }
+.switch-header button:checked { background: #48416a; }
+.hero scale trough { background: #4a4c64; border-color: transparent; }
+.hero scale highlight { background: #b5a4fc; border-color: transparent; }
+.hero scale slider { background: #e4dcff; border-color: #9b8adb; box-shadow: none; }
+
+.device-row {
+  border: 1px solid #2c3347;
+  background-color: #1b202e;
+  border-radius: 10px;
+}
+
+.device-row.selected-row {
+  border-color: #7364b1;
+  background-color: #2c2a46;
+}
+
+.switch-window viewport { background: transparent; }
+.settings-row {
+  background-color: #1b202e;
+  border: 1px solid #2c3347;
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+.settings-row switch:checked { background-color: #6650ae; }
+
+.device-button {
+  color: #eaf0fb;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 9px;
+  padding: 8px 10px;
+}
+
+.device-button:hover { background: #34384f; }
+.device-title { font-weight: bold; }
+.device-row checkbutton check { background: #171b2a; border-color: #777e97; }
+.device-row checkbutton check:checked { color: #17152a; background: #b9a8ff; border-color: #b9a8ff; }
+
+.active-badge {
+  color: #eee7ff;
+  background-color: #4c4174;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 4px 6px;
+}
+
+.switch-button {
+  color: #17152a;
+  background: #c3b3ff;
+  border: 1px solid #c3b3ff;
+  border-radius: 9px;
+  box-shadow: none;
+  font-weight: bold;
+  padding: 7px 13px;
+  text-shadow: none;
+}
+
+.switch-button:hover { background: #d6caff; }
+.switch-button:disabled { color: #a0a3b6; background: #272c3e; border-color: #34394e; }
+.switch-window button:focus { outline-color: #d5c8ff; }
+
+.error-banner {
+  color: #ffd6ce;
+  background-color: #442934;
+  border-radius: 8px;
+  padding: 8px;
+}

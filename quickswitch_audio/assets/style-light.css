@@ -1,0 +1,23 @@
+.switch-window { color: #232438; background-color: #f5f5fa; }
+.switch-header { color: #232438; background: #ffffff; border-color: #d7d7e7; }
+.hero { background-color: #ebe8fc; border-color: #d0c7f2; }
+.eyebrow, .muted-label { color: #535571; }
+.active-icon, .percent { color: #58459b; }
+.hero button, .switch-header button { color: #433575; }
+.hero button:hover, .switch-header button:hover { background: #dfd9f5; }
+.switch-header button:checked { background: #d8cef8; }
+.hero scale trough { background: #cfc9e8; }
+.hero scale highlight { background: #7963c4; }
+.hero scale slider { background: #ffffff; border-color: #7963c4; }
+.device-row, .settings-row { background-color: #ffffff; border-color: #dadbea; }
+.device-row.selected-row { background-color: #eee9fe; border-color: #aa98e7; }
+.device-button { color: #232438; }
+.device-button:hover { background: #eceaf5; }
+.device-row checkbutton check { background: #ffffff; border-color: #797b96; }
+.device-row checkbutton check:checked { color: #ffffff; background: #674bb0; border-color: #674bb0; }
+.active-badge { color: #463582; background-color: #ddd4fa; }
+.switch-button { color: #ffffff; background: #5d479f; border-color: #5d479f; }
+.switch-button:hover { background: #4e3b8d; }
+.switch-button:disabled { color: #646580; background: #e6e4ef; border-color: #d6d4e5; }
+.switch-window button:focus { outline-color: #735ab9; }
+.error-banner { color: #781d30; background-color: #fce8eb; }
