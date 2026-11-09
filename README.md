@@ -4,6 +4,18 @@ A Linux playback switcher inspired by [SoundSwitch](https://soundswitch.aaflalo.
 
 ## Install or upgrade
 
+### Arch, CachyOS, and Manjaro
+
+Install `base-devel` and `git` with `sudo pacman -S --needed base-devel git`, then build and install the `quickswitch` package as your regular user.
+
+```sh
+git clone https://github.com/zarzorr69/quickswitch.git && cd quickswitch/packaging/aur && makepkg -si
+```
+
+If you previously used `install.py`, quit QuickSwitch Audio and run `python3 install.py --uninstall` from your original checkout before installing the package. The uninstaller keeps your saved theme, key combination, and output cycle. Re-enable the shortcut and login service from Settings if you use them.
+
+### Per-user installation
+
 QuickSwitch Audio uses Python 3.8 or newer, PyGObject, GTK 3, and a running PipeWire or PulseAudio session. Install the dependencies with your distribution’s package manager. These commands cover three common package families.
 
 | Distribution | Dependencies |
@@ -55,13 +67,20 @@ For a compositor with text-only shortcut configuration, bind your chosen combina
 
 ### Commands
 
+If you used the per-user installer and `~/.local/bin` is outside your `PATH`, use `~/.local/bin/quickswitch-audio` in the commands below.
+
 | Command | Action |
 | --- | --- |
-| `~/.local/bin/quickswitch-audio` | Open the window |
-| `~/.local/bin/quickswitch-audio tray` | Open in the tray where available |
-| `~/.local/bin/quickswitch-audio status` | List detected outputs and cycle membership |
-| `~/.local/bin/quickswitch-audio toggle` | Switch to the next checked output |
-| `~/.local/bin/quickswitch-audio shortcut` | Switch when the shortcut setting is enabled |
+| `quickswitch-audio` | Open the window |
+| `quickswitch-audio tray` | Open in the tray where available |
+| `quickswitch-audio status` | List detected outputs and cycle membership |
+| `quickswitch-audio toggle` | Switch to the next checked output |
+| `quickswitch-audio shortcut` | Switch when the shortcut setting is enabled |
 | `systemctl --user status quickswitch-audio.service` | Inspect the service after enabling it in Settings on systemd |
 
-To uninstall, quit the window app and run `python3 install.py --uninstall` from the extracted folder. The uninstaller removes app-managed shortcuts and startup entries. Remove any shortcut you added manually in your desktop settings. Your saved theme, key combination, and output cycle remain in `~/.config/quickswitch-audio` or the equivalent directory under `$XDG_CONFIG_HOME`.
+### Uninstall
+
+- **Arch package.** Turn off the switch shortcut and login service in Settings, quit the app, and run `sudo pacman -R quickswitch`.
+- **Per-user install.** Quit the app and run `python3 install.py --uninstall` from the source folder. The uninstaller removes app-managed shortcuts and startup entries.
+
+Remove any shortcut you added manually in your desktop settings. Your saved theme, key combination, and output cycle remain in `~/.config/quickswitch-audio` or the equivalent directory under `$XDG_CONFIG_HOME`.

@@ -1,0 +1,23 @@
+pkgbase = quickswitch
+	pkgdesc = Switch Linux audio outputs and control the active volume
+	pkgver = 0.2.2
+	pkgrel = 1
+	url = https://github.com/zarzorr69/quickswitch
+	arch = any
+	depends = python
+	depends = python-gobject
+	depends = gtk3
+	depends = libpulse
+	optdepends = alsa-utils: Realtek ALC897 analog jack mixer control
+	optdepends = libayatana-appindicator: tray icon on compatible desktops
+	optdepends = libnotify: output switch notifications
+	optdepends = pipewire: native PipeWire output discovery
+	optdepends = wireplumber: native PipeWire routing and volume control
+	source = quickswitch-0.2.2.tar.gz::https://github.com/zarzorr69/quickswitch/archive/b2a1f45912266162ae29859c8b30d2f93860a1d0.tar.gz
+	source = quickswitch-audio
+	source = local.quickswitch.Audio.desktop
+	sha256sums = ca791f84495def7312b3e95561c81cfe0b7d6557d0e96f411420e0125bdb5152
+	sha256sums = a95c6805c47c3cfc428a772d522b0bd314c415f1c4c31ab82e757962c6b36949
+	sha256sums = 6646b5daa18ac24b5357e09dd8693c9af74a89657b879c1c7def19daddf0f6a8
+
+pkgname = quickswitch

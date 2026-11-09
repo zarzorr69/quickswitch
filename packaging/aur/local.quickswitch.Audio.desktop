@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=QuickSwitch Audio
+Comment=Switch playback outputs and control the active volume
+Exec=/usr/bin/quickswitch-audio
+Icon=quickswitch-audio
+Terminal=false
+Categories=AudioVideo;Audio;
+Keywords=Sound;Audio;Headphones;Speakers;PipeWire;
+Actions=SwitchOutput;
+
+[Desktop Action SwitchOutput]
+Name=Switch output
+Exec=/usr/bin/quickswitch-audio toggle

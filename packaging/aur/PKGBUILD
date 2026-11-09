@@ -1,0 +1,31 @@
+# Maintainer: zarzorr69
+pkgname=quickswitch
+pkgver=0.2.2
+pkgrel=1
+pkgdesc='Switch Linux audio outputs and control the active volume'
+arch=('any')
+url='https://github.com/zarzorr69/quickswitch'
+depends=('python' 'python-gobject' 'gtk3' 'libpulse')
+optdepends=(
+  'alsa-utils: Realtek ALC897 analog jack mixer control'
+  'libayatana-appindicator: tray icon on compatible desktops'
+  'libnotify: output switch notifications'
+  'pipewire: native PipeWire output discovery'
+  'wireplumber: native PipeWire routing and volume control'
+)
+_commit=b2a1f45912266162ae29859c8b30d2f93860a1d0
+source=("$pkgname-$pkgver.tar.gz::$url/archive/$_commit.tar.gz"
+        'quickswitch-audio'
+        'local.quickswitch.Audio.desktop')
+sha256sums=('ca791f84495def7312b3e95561c81cfe0b7d6557d0e96f411420e0125bdb5152'
+            'a95c6805c47c3cfc428a772d522b0bd314c415f1c4c31ab82e757962c6b36949'
+            '6646b5daa18ac24b5357e09dd8693c9af74a89657b879c1c7def19daddf0f6a8')
+
+package() {
+  cd "$srcdir/$pkgname-$_commit"
+  install -Dm644 -t "$pkgdir/usr/share/quickswitch-audio/quickswitch_audio" quickswitch_audio/*.py
+  install -Dm644 -t "$pkgdir/usr/share/quickswitch-audio/quickswitch_audio/assets" quickswitch_audio/assets/*
+  install -Dm755 "$srcdir/quickswitch-audio" "$pkgdir/usr/bin/quickswitch-audio"
+  install -Dm644 "$srcdir/local.quickswitch.Audio.desktop" "$pkgdir/usr/share/applications/local.quickswitch.Audio.desktop"
+  install -Dm644 quickswitch_audio/assets/quickswitch-audio.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/quickswitch-audio.svg"
+}
