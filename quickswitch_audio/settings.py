@@ -19,7 +19,8 @@ MODIFIER_KEYS = {
     "Shift_L": "Shift", "Shift_R": "Shift", "Super_L": "Super", "Super_R": "Super",
 }
 DEFAULT_SHORTCUT = ("Alt", "Super", "a")
-LAUNCHER = Path.home() / ".local/bin" / APP_SLUG
+SYSTEM_INSTALL = Path(__file__).resolve().parent.parent == Path("/usr/share") / APP_SLUG
+LAUNCHER = Path("/usr/bin") / APP_SLUG if SYSTEM_INSTALL else Path.home() / ".local/bin" / APP_SLUG
 UNIT_NAME = f"{APP_SLUG}.service"
 
 
@@ -133,11 +134,12 @@ X-QuickSwitch-Audio=true
 
 
 def unit_text():
+    executable = LAUNCHER if SYSTEM_INSTALL else f"%h/.local/bin/{APP_SLUG}"
     return f"""[Unit]
 Description=QuickSwitch Audio background switch service
 
 [Service]
-ExecStart=\"%h/.local/bin/{APP_SLUG}\" daemon
+ExecStart=\"{executable}\" daemon
 Restart=on-failure
 RestartSec=2
 TimeoutStopSec=45
