@@ -37,7 +37,9 @@
         "-Dsystemd=disabled",
         "-Dx11=disabled",
         "-Dbluez5=disabled",
-        "-Dgtk=disabled"
+        "-Dgtk=disabled",
+        "-Dbashcompletiondir=no",
+        "-Dzshcompletiondir=no"
       ],
       "post-install": [
         "install -Dm644 LICENSE -t /app/share/licenses/io.github.zarzorr69.quickswitch/pulseaudio"
