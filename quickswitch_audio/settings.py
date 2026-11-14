@@ -10,7 +10,7 @@ from contextlib import contextmanager
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
-from .audio import APP_SLUG, AudioError, config_dir
+from .audio import APP_SLUG, FLATPAK_ID, AudioError, config_dir
 
 
 MODIFIERS = ("Ctrl", "Alt", "Shift", "Super")
@@ -60,6 +60,8 @@ def desktop_arg(value):
 
 
 def shortcut_command():
+    if FLATPAK_ID:
+        return f"flatpak run {shlex.quote(FLATPAK_ID)} shortcut"
     return f"{shlex.quote(str(LAUNCHER))} shortcut"
 
 
@@ -89,7 +91,7 @@ def load():
         raise AudioError(f"Settings at {path} must be a JSON object.")
     defaults = Preferences()
     values = {name: data.get(name, value) for name, value in asdict(defaults).items()}
-    if values["theme"] not in ("light", "dark") or values["startup"] not in ("", "systemd", "desktop"):
+    if values["theme"] not in ("light", "dark") or values["startup"] not in ("", "systemd", "desktop", "portal"):
         raise AudioError(f"Theme or login settings at {path} are invalid.")
     if values["background"] is not None and not isinstance(values["background"], bool):
         raise AudioError(f"The background setting at {path} is invalid.")
@@ -120,6 +122,17 @@ def update(**values):
         preferences = replace(load(), **values)
         save(preferences)
         return preferences
+
+
+def set_background(enabled):
+    with lock():
+        preferences = load()
+        if FLATPAK_ID and enabled:
+            from . import portals
+            portals.require_background(preferences.startup == "portal")
+        updated = replace(preferences, background=enabled)
+        save(updated)
+        return updated
 
 
 def login_entry():

@@ -35,6 +35,8 @@ END = "END QuickSwitch Audio shortcut"
 
 
 def backend_for_session():
+    if audio.FLATPAK_ID:
+        return "manual"
     desktop = set(os.environ.get("XDG_CURRENT_DESKTOP", "").lower().split(":"))
     if os.environ.get("HYPRLAND_INSTANCE_SIGNATURE") and shutil.which("hyprctl"):
         return "hyprland"

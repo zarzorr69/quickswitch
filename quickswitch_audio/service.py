@@ -17,6 +17,8 @@ MESSAGE_LIMIT = 8192
 
 def socket_path():
     runtime = os.environ.get("XDG_RUNTIME_DIR")
+    if audio.FLATPAK_ID and runtime and Path(runtime).is_absolute():
+        return Path(runtime) / "app" / audio.FLATPAK_ID / audio.APP_SLUG / "control.sock"
     base = Path(runtime) / audio.APP_SLUG if runtime and Path(runtime).is_absolute() else audio.config_dir()
     return base / "control.sock"
 
@@ -165,6 +167,18 @@ def set_startup(enabled):
         previous = settings.load()
         if enabled == bool(previous.startup):
             return previous
+        if audio.FLATPAK_ID:
+            from . import portals
+            portals.require_background(enabled, required=enabled)
+            updated = replace(previous, startup="portal" if enabled else "")
+            try:
+                if not enabled:
+                    request("stop")
+                settings.save(updated)
+            except (audio.AudioError, OSError):
+                portals.require_background(bool(previous.startup), required=bool(previous.startup))
+                raise
+            return updated
         if enabled:
             mode = "systemd" if systemd_available() else "desktop"
             apply_startup(mode)

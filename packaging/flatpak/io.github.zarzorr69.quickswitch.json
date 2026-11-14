@@ -1,0 +1,112 @@
+{
+  "app-id": "io.github.zarzorr69.quickswitch",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "51",
+  "sdk": "org.gnome.Sdk",
+  "command": "quickswitch-audio",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=wayland",
+    "--socket=fallback-x11",
+    "--socket=pulseaudio",
+    "--device=dri",
+    "--talk-name=org.kde.StatusNotifierWatcher",
+    "--env=PULSE_PROP_media.category=Manager"
+  ],
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/share/aclocal",
+    "/share/man",
+    "*.a",
+    "*.la"
+  ],
+  "modules": [
+    {
+      "name": "pulseaudio-client",
+      "buildsystem": "meson",
+      "config-opts": [
+        "-Ddaemon=false",
+        "-Dclient=true",
+        "-Ddoxygen=false",
+        "-Dman=false",
+        "-Dtests=false",
+        "-Ddatabase=simple",
+        "-Ddbus=disabled",
+        "-Dalsa=disabled",
+        "-Dsystemd=disabled",
+        "-Dx11=disabled",
+        "-Dbluez5=disabled",
+        "-Dgtk=disabled"
+      ],
+      "post-install": [
+        "install -Dm644 LICENSE -t /app/share/licenses/io.github.zarzorr69.quickswitch/pulseaudio"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-17.0.tar.xz",
+          "sha256": "053794d6671a3e397d849e478a80b82a63cb9d8ca296bd35b73317bb5ceb87b5"
+        }
+      ]
+    },
+    {
+      "name": "alsa-utils",
+      "buildsystem": "autotools",
+      "config-opts": [
+        "--disable-alsamixer",
+        "--disable-alsaconf",
+        "--disable-alsaloop",
+        "--disable-bat",
+        "--disable-nhlt",
+        "--disable-xmlto",
+        "--disable-rst2man",
+        "--disable-nls"
+      ],
+      "make-args": [
+        "-C",
+        "amixer"
+      ],
+      "make-install-args": [
+        "-C",
+        "amixer"
+      ],
+      "post-install": [
+        "install -Dm644 COPYING -t /app/share/licenses/io.github.zarzorr69.quickswitch/alsa-utils"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://www.alsa-project.org/files/pub/utils/alsa-utils-1.2.16.tar.bz2",
+          "sha256": "092399d5e8749a1d5e188e393157521cec4b75693b60ebb79bbce728cff2232c"
+        }
+      ]
+    },
+    "shared-modules/libappindicator/libappindicator-gtk3-introspection-12.10.json",
+    {
+      "name": "quickswitch",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm644 -t /app/share/quickswitch-audio/quickswitch_audio quickswitch_audio/*.py",
+        "install -Dm644 -t /app/share/quickswitch-audio/quickswitch_audio/assets quickswitch_audio/assets/*",
+        "install -Dm755 packaging/flatpak/quickswitch-audio /app/bin/quickswitch-audio",
+        "install -Dm644 packaging/flatpak/io.github.zarzorr69.quickswitch.desktop /app/share/applications/io.github.zarzorr69.quickswitch.desktop",
+        "install -Dm644 packaging/flatpak/io.github.zarzorr69.quickswitch.metainfo.xml /app/share/metainfo/io.github.zarzorr69.quickswitch.metainfo.xml",
+        "install -Dm644 quickswitch_audio/assets/quickswitch-audio.svg /app/share/icons/hicolor/scalable/apps/io.github.zarzorr69.quickswitch.svg",
+        "PYTHONPATH=/app/share/quickswitch-audio python3 -m quickswitch_audio --help"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../..",
+          "skip": [
+            ".git",
+            ".flatpak-builder",
+            "build-flatpak",
+            "flatpak-repo"
+          ]
+        }
+      ]
+    }
+  ]
+}

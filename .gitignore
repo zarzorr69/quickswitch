@@ -1,2 +1,7 @@
 __pycache__/
 *.py[cod]
+.flatpak-builder/
+build-flatpak/
+flatpak-repo/
+*.flatpak
+*.flatpak.sha256

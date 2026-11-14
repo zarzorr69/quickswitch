@@ -201,7 +201,7 @@ class SettingsPage(Gtk.ScrolledWindow):
         self.add_row("Color theme", "Applies to the window and menus.", self.theme)
 
         self.add_heading("BACKGROUND")
-        self.background = self.make_switch(lambda active: settings.update(background=active))
+        self.background = self.make_switch(settings.set_background)
         self.add_row("Keep app running", "Keep the app available after closing the window.", self.background)
         self.startup = self.make_switch(service.set_startup)
         self.startup_detail = self.add_row("Start audio service at login", "", self.startup)
@@ -297,6 +297,7 @@ class SettingsPage(Gtk.ScrolledWindow):
         self.startup_detail.set_text({
             "systemd": "Enabled through your user systemd service.",
             "desktop": "Enabled through desktop autostart for your next sign-in.",
+            "portal": "Enabled through your desktop’s background permission.",
         }.get(preferences.startup, "Start the background audio worker with your session."))
         backend = preferences.shortcut_backend
         if backend == "manual":

@@ -15,10 +15,12 @@ from time import sleep
 
 APP_NAME = "QuickSwitch Audio"
 APP_SLUG = "quickswitch-audio"
-APP_ID = "local.quickswitch.Audio"
+FLATPAK_ID = os.environ.get("FLATPAK_ID", "")
+APP_ID = FLATPAK_ID or "local.quickswitch.Audio"
 ICON_DIR = Path(__file__).with_name("assets")
 ICON_PATH = ICON_DIR / f"{APP_SLUG}.svg"
 CODEC_PATH = Path("/proc/asound")
+SYSFS_CODECS = Path("/sys/bus/hdaudio/devices")
 MIXER_LEVEL = "87"
 REALTEK_PORTS = {
     "analog-output-lineout": ("Line Out", "Front"),
@@ -97,6 +99,13 @@ def realtek_cards():
                 if stream.readline().strip() == "Codec: Realtek ALC897":
                     cards.add(codec.parent.name[4:])
         except OSError:
+            continue
+    for codec in SYSFS_CODECS.glob("hdaudioC*D*"):
+        match = re.fullmatch(r"hdaudioC(\d+)D\d+", codec.name)
+        try:
+            if match and int((codec / "vendor_id").read_text().strip(), 16) == 0x10EC0897:
+                cards.add(match[1])
+        except (OSError, ValueError):
             continue
     return cards
 
@@ -459,6 +468,10 @@ def change_volume(key, level=None):
 
 
 def notify(output):
+    if FLATPAK_ID:
+        from . import portals
+        portals.notify(output)
+        return
     try:
         command("notify-send", "-a", APP_NAME, "-i", str(ICON_PATH),
                 "-h", f"string:x-canonical-private-synchronous:{APP_SLUG}",

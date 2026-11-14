@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=QuickSwitch Audio
+Comment=Switch audio outputs and control their volume
+Exec=quickswitch-audio
+Icon=io.github.zarzorr69.quickswitch
+Terminal=false
+Categories=AudioVideo;Audio;Mixer;
+Keywords=Sound;Audio;Headphones;Speakers;PipeWire;PulseAudio;
+Actions=SwitchOutput;
+
+[Desktop Action SwitchOutput]
+Name=Switch output
+Exec=quickswitch-audio toggle

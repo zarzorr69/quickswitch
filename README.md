@@ -4,6 +4,33 @@ A Linux playback switcher inspired by [SoundSwitch](https://soundswitch.aaflalo.
 
 ## Install or upgrade
 
+### Flatpak
+
+Install Flatpak through your distribution. On CachyOS and Arch, run `sudo pacman -S --needed flatpak`. Then install the x86_64 download from this project's GitHub releases.
+
+```sh
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && flatpak install --user https://github.com/zarzorr69/quickswitch/releases/latest/download/QuickSwitch-x86_64.flatpak
+```
+
+Open **QuickSwitch Audio** from your launcher or run `flatpak run io.github.zarzorr69.quickswitch`. PipeWire sessions need their PulseAudio compatibility service, usually `pipewire-pulse`. The package includes Python, GTK, `pactl`, and `amixer` through its runtime and bundled tools.
+
+In Settings, enable the switch shortcut and use **Copy command** to assign `flatpak run io.github.zarzorr69.quickswitch shortcut` to your preferred keys in your desktop's shortcut settings. That command works with the window and background worker closed. The Flatpak keeps its preferences in `~/.var/app/io.github.zarzorr69.quickswitch/config/quickswitch-audio`.
+
+**Keep app running** and **Start audio service at login** request permission through the desktop background portal. Login startup starts the worker on your next sign-in. The Flatpak uses this portal instead of installing a host systemd unit or editing compositor configuration. Availability depends on your installed desktop portal backend. The native installer continues to offer systemd startup and automatic desktop shortcut setup.
+
+The package requests desktop display, rendering, and audio access. It uses the audio permission for device discovery, volume, routing, and the Realtek ALC897 mixer controls. Tray support depends on available AppIndicator support and a compatible desktop tray host.
+
+The GitHub Actions **Flatpak** workflow builds the bundle and publishes each new version on the project's Releases page. To build locally, install `flatpak-builder`, clone this repository, and run the following commands from the source directory.
+
+```sh
+git submodule update --init --recursive
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse --force-clean --repo=flatpak-repo --default-branch=stable build-flatpak packaging/flatpak/io.github.zarzorr69.quickswitch.json
+flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo flatpak-repo QuickSwitch-x86_64.flatpak io.github.zarzorr69.quickswitch stable
+```
+
+This package is distributed through GitHub. A Flathub listing requires separate review. Flathub's [generative AI policy](https://docs.flathub.org/docs/for-app-authors/requirements#generative-ai-policy) requires human-authored submission manifests and submission interactions. The application code, this packaging, and documentation were created with AI assistance. This manifest is for the project's own builds and cannot be submitted to Flathub under that policy. A human maintainer must also select and document the application's source license before submitting it.
+
 ### Arch, CachyOS, and Manjaro
 
 Install `base-devel` and `git` with `sudo pacman -S --needed base-devel git`, then build and install the `quickswitch` package as your regular user.
@@ -80,6 +107,7 @@ If you used the per-user installer and `~/.local/bin` is outside your `PATH`, us
 
 ### Uninstall
 
+- **Flatpak.** Turn off login startup in Settings, quit the app, and run `flatpak uninstall --user io.github.zarzorr69.quickswitch`. Remove its custom shortcut in your desktop settings.
 - **Arch package.** Turn off the switch shortcut and login service in Settings, quit the app, and run `sudo pacman -R quickswitch`.
 - **Per-user install.** Quit the app and run `python3 install.py --uninstall` from the source folder. The uninstaller removes app-managed shortcuts and startup entries.
 

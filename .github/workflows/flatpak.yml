@@ -1,0 +1,55 @@
+name: Flatpak
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - quickswitch_audio/**
+      - tests/**
+      - packaging/flatpak/**
+      - .github/workflows/flatpak.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flatpak-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder python3-gi dbus-daemon
+          flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      - name: Check desktop integration
+        run: dbus-run-session -- python3 -m unittest discover -s tests -v
+      - name: Build Flatpak
+        run: |
+          flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse --force-clean --repo=flatpak-repo --default-branch=stable build-flatpak packaging/flatpak/io.github.zarzorr69.quickswitch.json
+          flatpak build-bundle --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo flatpak-repo QuickSwitch-x86_64.flatpak io.github.zarzorr69.quickswitch stable
+          sha256sum QuickSwitch-x86_64.flatpak > QuickSwitch-x86_64.flatpak.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuickSwitch-x86_64
+          path: QuickSwitch-x86_64.flatpak*
+      - name: Publish versioned download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(python3 -c 'import xml.etree.ElementTree as ET; print(ET.parse("packaging/flatpak/io.github.zarzorr69.quickswitch.metainfo.xml").find("./releases/release").get("version"))')
+          tag="v$version"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag already exists. The new build is available as a workflow artifact."
+          else
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "QuickSwitch $version" --notes "Flatpak for x86_64 Linux desktops. Install with flatpak install --user ./QuickSwitch-x86_64.flatpak and launch with flatpak run io.github.zarzorr69.quickswitch. Requires PulseAudio or PipeWire with PulseAudio compatibility. This download is published directly by QuickSwitch." QuickSwitch-x86_64.flatpak QuickSwitch-x86_64.flatpak.sha256
+          fi
