@@ -12,7 +12,7 @@ Install Flatpak through your distribution. On CachyOS and Arch, run `sudo pacman
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && flatpak install --user https://github.com/zarzorr69/quickswitch/releases/latest/download/QuickSwitch-x86_64.flatpak
 ```
 
-Open **QuickSwitch Audio** from your launcher or run `flatpak run io.github.zarzorr69.quickswitch`. PipeWire sessions need their PulseAudio compatibility service, usually `pipewire-pulse`. The package includes Python, GTK, `pactl`, and `amixer` through its runtime and bundled tools.
+Before switching from a native install, turn off its login service and shortcut in Settings, then quit it. Open the Flatpak from your launcher or run `flatpak run io.github.zarzorr69.quickswitch`. PipeWire sessions need their PulseAudio compatibility service, usually `pipewire-pulse`. The package includes Python, GTK, `pactl`, and `amixer` through its runtime and bundled tools.
 
 In Settings, enable the switch shortcut and use **Copy command** to assign `flatpak run io.github.zarzorr69.quickswitch shortcut` to your preferred keys in your desktop's shortcut settings. That command works with the window and background worker closed. The Flatpak keeps its preferences in `~/.var/app/io.github.zarzorr69.quickswitch/config/quickswitch-audio`.
 
